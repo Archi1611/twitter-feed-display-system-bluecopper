@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Display System</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+</head>
+<body>
+
+<div id="card">
+    <h2 id="author">Loading...</h2>
+    <p id="text">Initializing system...</p>
+
+    <div id="qr-container">
+        <img id="qr-image" width="250" height="250" />
+        <canvas id="hidden-canvas" style="display:none;"></canvas>
+    </div>
+
+    <div style="margin-top:30px;">
+        <button onclick="pause()">Pause</button>
+        <button onclick="resume()">Resume</button>
+        <button onclick="nextTweet()">Next</button>
+    </div>
+</div>
+
+<script>
+let currentId = null;
+let paused = false;
+
+async function updateDisplay() {
+    if (paused) return;
+
+    const response = await fetch("/api/tweet");
+    const tweet = await response.json();
+
+    if (tweet.id !== currentId) {
+        const card = document.getElementById("card");
+        const canvas = document.getElementById("hidden-canvas");
+        const img = document.getElementById("qr-image");
+
+        card.classList.add("fade-out");
+
+        setTimeout(() => {
+            QRCode.toCanvas(canvas, tweet.url, { width: 250 }, () => {
+                img.src = canvas.toDataURL("image/png");
+                document.getElementById("author").innerText = tweet.author;
+                document.getElementById("text").innerText = tweet.text;
+                currentId = tweet.id;
+                card.classList.remove("fade-out");
+            });
+        }, 400);
+    }
+}
+
+function pause() {
+    paused = true;
+}
+
+function resume() {
+    paused = false;
+}
+
+function nextTweet() {
+    fetch("/api/tweet?force=true");
+}
+
+updateDisplay();
+setInterval(updateDisplay, 1000);
+</script>
+
+</body>
+</html>

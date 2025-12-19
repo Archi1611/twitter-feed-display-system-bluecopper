@@ -1,0 +1,56 @@
+body {
+    background-color: #15202b;
+    color: white;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+#card {
+    width: 80%;
+    max-width: 900px;
+    background: #192734;
+    padding: 50px;
+    border-radius: 25px;
+    text-align: center;
+    border: 1px solid #38444d;
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+#author {
+    color: #8899a6;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+#text {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    line-height: 1.3;
+}
+
+#qr-container {
+    background: white;
+    padding: 15px;
+    border-radius: 15px;
+    display: inline-block;
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
